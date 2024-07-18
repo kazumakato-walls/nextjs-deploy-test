@@ -1,0 +1,28 @@
+// pages/index.tsx
+import { GetServerSideProps } from 'next';
+
+interface Props {
+  initialData: any;
+}
+
+const HomePage: React.FC<Props> = ({ initialData }) => {
+  return (
+    <div>
+      <h1>Welcome to the Home Page</h1>
+      <p>Data: {initialData}</p>
+    </div>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // ここにデータをフェッチするロジックを書きます。例えばAPIからデータを取得するなど。
+  const data = "Server-side fetched data";
+
+  return {
+    props: {
+      initialData: data,
+    },
+  };
+};
+
+export default HomePage;
