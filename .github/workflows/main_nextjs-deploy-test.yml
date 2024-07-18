@@ -71,9 +71,9 @@ jobs:
       - name: 'Build on Azure'
         run: |
           cd D:/home/site/wwwroot
-          npm run build
+          npx next build
 
       - name: 'Start the application'
         run: |
           cd D:/home/site/wwwroot
-          npm start
+          npx next start
