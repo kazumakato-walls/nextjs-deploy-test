@@ -178,7 +178,7 @@ export function Storage() {
     console.log(id)
     const refresh = axios.post("http://localhost:8000/file/download_file",
       {"file_id": id}, 
-      config3)
+      config3) 
     .then((res) => {
       console.log(res)
       console.log(decodeURI(res.headers['content-disposition']))
