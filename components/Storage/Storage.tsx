@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 // library
 import { useCounter, useDisclosure } from '@mantine/hooks';
 import { Table, TextInput, Group, FileButton, Text, Button, Grid, ActionIcon, Menu, Modal } from '@mantine/core';
-import axios from 'axios';
+import axios, {ResponseType } from 'axios';
 import { saveAs } from 'file-saver';
 
 // road file
@@ -171,7 +171,7 @@ export function Storage() {
     headers: {
       'Authorization': 'Bearer ' + session?.user?.accessToken,
     },
-    responseType: 'blob'
+    responseType: 'blob' as ResponseType // 修正点
   };
   // ファイルダウンロード
   const downloadFile = async (id:number) => {
