@@ -53,10 +53,10 @@ jobs:
           name: node-app
 
       - name: Create wwwroot directory
-        run: mkdir -p /home/site/wwwroot
+        run: mkdir -p D:/home/site/wwwroot
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d /home/site/wwwroot
+        run: unzip release.zip -d D:/home/site/wwwroot
 
       - name: 'Login to Azure'
         uses: azure/login@v1
@@ -65,10 +65,10 @@ jobs:
 
       - name: 'Install dependencies on Azure'
         run: |
-          cd /home/site/wwwroot
+          cd D:/home/site/wwwroot
           npm install --production
 
       - name: 'Start the application'
         run: |
-          cd /home/site/wwwroot
+          cd D:/home/site/wwwroot
           npm start
