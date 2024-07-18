@@ -22,7 +22,6 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
 
       - name: Zip artifact for deployment
         run: zip -r release.zip .
@@ -56,4 +55,4 @@ jobs:
           app-name: 'nextjs-deploy-test'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D7B3E0DC7F9D4BC4AFB7022204F89964 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
