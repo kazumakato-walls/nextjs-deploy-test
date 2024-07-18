@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           npm install
-          npm run build --if-present
+          npm run build
 
       - name: Zip artifact for deployment
         run: zip -r release.zip . -x "*.git*" -x "node_modules/*" -x "*.test.*" -x "test/*"
@@ -60,8 +60,13 @@ jobs:
           app-name: 'nextjs-deploy-test'
           slot-name: 'Production'
           package: .
-      
+
       - name: 'Install dependencies on Azure'
         run: |
           cd /home/site/wwwroot
           npm install
+
+      - name: 'Start the application'
+        run: |
+          cd /home/site/wwwroot
+          npm start
