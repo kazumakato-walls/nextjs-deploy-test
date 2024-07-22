@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - nextjs-deploy-test
 
 on:
@@ -21,20 +18,26 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: |
+          mkdir -p build
+          mv .next build/.next
+          mv package.json build/package.json
+          mv package-lock.json build/package-lock.json
+          cd build
+          zip -r release.zip ./*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: release.zip
+          path: build/release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,21 +45,35 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
+      - name: Create wwwroot directory
+        run: mkdir -p D:/home/site/wwwroot
+
       - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        run: unzip release.zip -d D:/home/site/wwwroot
+
+      - name: 'Login to Azure'
+        uses: azure/login@v1
         with:
-          app-name: 'nextjs-deploy-test'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D7B3E0DC7F9D4BC4AFB7022204F89964 }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Install dependencies on Azure'
+        run: |
+          cd D:/home/site/wwwroot
+          npm install
+
+      - name: 'Build on Azure'
+        run: |
+          cd D:/home/site/wwwroot
+          npx next build
+
+      - name: 'Start the application'
+        run: |
+          cd D:/home/site/wwwroot
+          npx next start
