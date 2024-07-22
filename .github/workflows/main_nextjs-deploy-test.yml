@@ -62,7 +62,7 @@ jobs:
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
-        with:
+        with: 
           app-name: 'nextjs-deploy-test'
           slot-name: 'Production'
           package: ./deploy
