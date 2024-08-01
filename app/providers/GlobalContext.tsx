@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { FileListType, SelectedDirectoryType } from './GlobalContextType';
+import { FileListType, SelectedDirectoryType, DirectoryListType, FavoriteListType } from './GlobalContextType';
 
 interface GlobalContextList {
   // ユーザー情報
@@ -8,9 +8,13 @@ interface GlobalContextList {
   pageState: number;
   setPageState: React.Dispatch<React.SetStateAction<number>>;
 
-  // お気に入り 1:登録なし 2: 登録済み 3: 編集ボタン表示
+  // お気に入り 0:登録なし 0以外:登録済み(id) 
   favoriteState: number;
   setFavoriteState: React.Dispatch<React.SetStateAction<number>>;
+
+  // 画面リフレッシュ用カウンタ
+  refreshState: number;
+  setRefreshState: React.Dispatch<React.SetStateAction<number>>;
 
   // 選択ディレクトリ
   SelectedDirectory: SelectedDirectoryType | null
@@ -19,21 +23,37 @@ interface GlobalContextList {
   // 選択ディレクトリ内のファイル一覧
   FileList: FileListType[] | null
   setFileList: React.Dispatch<React.SetStateAction<FileListType[] | null>>;
+
+  // ディレクトリ一覧
+  DirectoryList: DirectoryListType[] |null
+  setDirectoryList: React.Dispatch<React.SetStateAction<DirectoryListType[] | null>>;
+
+  // お気に入り一覧
+  FavoriteList: FavoriteListType[] |null
+  setFavoriteList: React.Dispatch<React.SetStateAction<FavoriteListType[] | null>>;
+
 }
 
 const GlobalContext = createContext<GlobalContextList | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [pageState, setPageState] = useState<number>(1);
-  const [favoriteState, setFavoriteState] = useState<number>(1);
+  const [favoriteState, setFavoriteState] = useState<number>(0);
+  const [refreshState, setRefreshState] = useState<number>(0);
   const [FileList, setFileList] = useState<FileListType[] | null>(null);
   const [SelectedDirectory, setSelectedDirectory] = useState<SelectedDirectoryType | null>(null);
+  const [DirectoryList, setDirectoryList] = useState<DirectoryListType[] | null>(null);
+  const [FavoriteList, setFavoriteList] = useState<FavoriteListType[] | null>(null);
+  
   
   return (
     <GlobalContext.Provider value={{ pageState, setPageState,
                                      favoriteState,setFavoriteState,
+                                     refreshState, setRefreshState,
                                      FileList, setFileList,
-                                     SelectedDirectory, setSelectedDirectory
+                                     SelectedDirectory, setSelectedDirectory,
+                                     DirectoryList, setDirectoryList,
+                                     FavoriteList, setFavoriteList
                                    }}>
       {children}
     </GlobalContext.Provider>

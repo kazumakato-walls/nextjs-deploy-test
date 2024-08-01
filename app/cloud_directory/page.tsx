@@ -1,13 +1,16 @@
 "use client";
-
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { useEffect } from 'react';
+// react
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
+
+// library
 import { Grid } from '@mantine/core';
-import { Navbar } from '../../components/Navbar/Nav';
-import { Storage } from '../../components/Storage/Storage';
-import React from 'react';
+
+// road file
 import { GlobalProvider, useGlobalContext } from '../providers/GlobalContext';
+import { Navbar } from '../../components/Navbar/Navbar';
+import { CloudDirectory } from '../../components/CloudDirectory/CloudDirectory';
 import { Contact } from '../../components/Contact/Contact';
 import { Options } from '../../components/Options/Options';
 
@@ -17,7 +20,7 @@ const HomeContent = () => {
   const renderPageContent = () => {
     switch (pageState) {
       case 1:
-        return <Storage />; //ファイル共有画面へ
+        return <CloudDirectory />; //ファイル共有画面へ
       case 2:
         return <Contact />; //お問い合わせ画面へ
       case 3:

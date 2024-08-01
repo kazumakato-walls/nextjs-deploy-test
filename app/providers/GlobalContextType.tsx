@@ -11,3 +11,19 @@ export interface SelectedDirectoryType {
     directory_id: number;
     path: string;
   };
+
+export interface DirectoryListType {
+  directory_id: number;
+  directory_name: string;
+  path: string | null;
+  directory_class: number;
+  children?: DirectoryListType[];
+}
+
+export interface FavoriteListType {
+  id:number
+  directory_id: number;
+  favorite_name: string;
+  directory_path: string;
+  directory_class: number;
+}

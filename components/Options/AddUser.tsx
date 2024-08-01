@@ -72,15 +72,15 @@ export function AddUser() {
             "storage": form.values.storage
             }
         // console.log(data)
-        const addcompany = axios.post("http://localhost:8000/user/signup",data,config)
+        const addcompany = axios.post("http://localhost:8000/user/create_user",data,config)
         .then((res) => {
             console.log(res.data)
-            setMessage({title: 'Succeeded', massage: '会社追加のリクエスト受け付けました。',color: 'teal'})
+            setMessage({title: 'Succeeded', massage: 'ユーザー追加のリクエスト受け付けました。',color: 'teal'})
             setAlertOpened(true)    
           })
         .catch(err => {
             console.log("err:", err);
-            setMessage({title: 'Error', massage: '入力内容に問題があるため会社追加できませんでした。',color: 'red'})
+            setMessage({title: 'Error', massage: '入力内容に問題があるためユーザー追加できませんでした。',color: 'red'})
             setAlertOpened(true)
           });
       };
