@@ -1,8 +1,13 @@
-import { Title, Text, Anchor } from '@mantine/core';
+import { Title, Text, Anchor ,Button} from '@mantine/core';
 import classes from './Welcome.module.css';
 import Link from "next/link";
 
 export function Welcome() {
+
+  const test = () => {
+    console.log("Backend URL:", process.env.NEXT_PUBLIC_URL);
+  }
+
   return (
     <>
       <Link href="/cloud_directory"
@@ -24,6 +29,7 @@ export function Welcome() {
         Walls Cloud Directory はインターネットを通じてデータを
         保存・アクセス・共有を行うことができるプラットフォームです。
       </Text>
+      <Button onClick={test}>test</Button>
     </>
   );
 }
