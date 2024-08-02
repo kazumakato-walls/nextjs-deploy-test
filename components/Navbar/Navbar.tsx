@@ -41,7 +41,7 @@ export function Navbar() {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const { setPageState, setFileList, setSelectedDirectory,refreshState, setRefreshState } = useGlobalContext();
   const { session, config } = useAuthConfig();
-
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
 
   // フォルダ追加モーダルの初期値リセット
   useEffect(() => {
@@ -50,8 +50,9 @@ export function Navbar() {
   }, [refreshState]);
 
   const getDirectoryList = () => {
+    console.log(backendUrl)
     axios
-      .get('http://localhost:8000/directory/get_all_directory', config)
+      .get(backendUrl + '/directory/get_all_directory', config)
       .then((res) => {
         console.log(res.data);
         setTree(buildTree(res.data));
@@ -63,7 +64,7 @@ export function Navbar() {
   };
 
   const getFavoriteList = () => {
-    axios.get('http://localhost:8000/favorite/get_all', config)
+    axios.get(backendUrl + '/favorite/get_all', config)
     .then((res) => {
         console.log(res.data);
         setFavorites(res.data);

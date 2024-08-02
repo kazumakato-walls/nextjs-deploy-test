@@ -12,6 +12,7 @@ export function AddUser() {
   const [selectedCompany, setSelectedCompany] = useState<number | null>(null);
   const [alertOpened, setAlertOpened] = useState(false);
   const [message, setMessage] = useState<{ title: string, massage: string,color: string }>({title:'',massage:'',color:''});
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
   const config = {
     headers: {
       Authorization: 'Bearer ' + session?.user?.accessToken
@@ -25,8 +26,8 @@ export function AddUser() {
           "company_id": 1
           }
         const [companyResponse, departmentResponse] = await Promise.all([
-          axios.get('http://localhost:8000/company/get_all',config),
-          axios.get('http://localhost:8000/department/get_all_department?company_id=1')
+          axios.get(backendUrl + '/company/get_all',config),
+          axios.get(backendUrl + '/department/get_all_department?company_id=1')
         ]);
         console.log(companyResponse.data)
         console.log(departmentResponse.data)
@@ -72,7 +73,7 @@ export function AddUser() {
             "storage": form.values.storage
             }
         // console.log(data)
-        const addcompany = axios.post("http://localhost:8000/user/create_user",data,config)
+        const addcompany = axios.post(backendUrl + '/user/create_user',data,config)
         .then((res) => {
             console.log(res.data)
             setMessage({title: 'Succeeded', massage: 'ユーザー追加のリクエスト受け付けました。',color: 'teal'})
@@ -88,7 +89,7 @@ export function AddUser() {
       const SelectedCompany = (value: string | null) => {
         form.setFieldValue('company_id', value ? value: '');
         console.log('companyid:' + value)
-        const addcompany = axios.get("http://localhost:8000/department/get_all_department?company_id=" + value)
+        const addcompany = axios.get(backendUrl + '/department/get_all_department?company_id=' + value)
         .then((res) => {
           console.log(res.data)
           setDepartments(res.data.map((department: any) => ({ value: department.id.toString(), label: department.department_name })));

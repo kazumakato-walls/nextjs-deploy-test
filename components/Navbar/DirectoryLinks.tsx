@@ -12,10 +12,10 @@ import { Favorite } from './NavbarTypes';
 export const DirectoryLinks = ({ directories }: { directories: Directory[] }) => {
   const { setFileList, setSelectedDirectory, setPageState, setFavoriteState } = useGlobalContext();
   const { session, config } = useAuthConfig();
-
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
   // お気に入り登録済みかどうかのチェックを行い、登録済みの場合はお気に入りボタンに色をつける。
   const getfavoriteList = (path: string) => {
-    axios.get('http://localhost:8000/favorite/get_all', config)
+    axios.get(backendUrl + '/favorite/get_all', config)
     .then((res) => {
         console.log(res.data);
         const favorites: Favorite[] = res.data;
@@ -36,7 +36,7 @@ export const DirectoryLinks = ({ directories }: { directories: Directory[] }) =>
   }
   // ファイル一覧を取得する。
   const getFileList = (directory_id: number,path: string) => {
-    axios.post('http://localhost:8000/file/get_all_file', { directory_id }, config)
+    axios.post(backendUrl + '/file/get_all_file', { directory_id }, config)
     .then((res) => {
         console.log(res.data);
         setFileList(res.data);

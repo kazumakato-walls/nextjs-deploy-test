@@ -23,6 +23,7 @@ export function AddCompany() {
   const [regions, setRegions] = useState<{ value: string, label: string }[]>([]);
   const [alertOpened, setAlertOpened] = useState(false);
   const [message, setMessage] = useState<{ title: string, massage: string,color: string }>({title:'',massage:'',color:''});
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
   const config = {
     headers: {
       Authorization: 'Bearer ' + session?.user?.accessToken
@@ -32,9 +33,9 @@ export function AddCompany() {
     const fetchData = async () => {
       try {
         const [companyResponse, regionResponse, industryResponse] = await Promise.all([
-          axios.get('http://localhost:8000/company/get_all'),
-          axios.get('http://localhost:8000/region/get_all'),
-          axios.get('http://localhost:8000/industry/get_all')
+          axios.get(backendUrl + '/company/get_all'),
+          axios.get(backendUrl + '/region/get_all'),
+          axios.get(backendUrl + '/industry/get_all')
         ]);
         setCompanies(companyResponse.data.map((company: any) => ({ value: company.id.toString(), label: company.company_name }))); // 適切にデータをマッピングします
         setRegions(regionResponse.data.map((region: any) => ({ value: region.id.toString(), label: region.region }))); // 適切にデータをマッピングします
@@ -83,7 +84,7 @@ export function AddCompany() {
         "storage": form.values.storage
         }
     console.log(data)
-    const addcompany = axios.post("http://localhost:8000/company/add_company",data,config)
+    const addcompany = axios.post(backendUrl + '/company/add_company',data,config)
     .then((res) => {
         console.log(res.data)
         setMessage({title: 'Succeeded', massage: '会社追加のリクエスト受け付けました。',color: 'teal'})

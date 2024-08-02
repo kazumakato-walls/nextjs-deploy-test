@@ -19,13 +19,14 @@ export const FavoriteLinks = ({ favorites }: { favorites: Favorite[] }) => {
   const [favoriteId, setFavoriteId] = useState<number>(0);
   const [favoriteName, setFavoriteName] = useState<string>('');
   const [favoritePath, setFavoritePath] = useState<string>('');
-  
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
+
   // ファイル一覧を取得。
   const getFileList = (id:number, directory_id: number,path: string) => {
     console.log(directory_id)
     console.log(id)
     console.log(path)
-    axios.post('http://localhost:8000/file/get_all_file', { directory_id }, config)
+    axios.post(backendUrl + '/file/get_all_file', { directory_id }, config)
     .then((res) => {
         console.log(res.data);
         setFileList(res.data);
@@ -53,7 +54,7 @@ export const FavoriteLinks = ({ favorites }: { favorites: Favorite[] }) => {
       "id": favoriteId,
       "favorite_name": value
       }
-    axios.put('http://localhost:8000/favorite/update_favorite',params, config)
+    axios.put(backendUrl + '/favorite/update_favorite',params, config)
     .then((res) => {
         console.log(res.data);
         setRefreshState(prevCount => prevCount + 1)
@@ -67,7 +68,7 @@ export const FavoriteLinks = ({ favorites }: { favorites: Favorite[] }) => {
 
   // お気に入り名削除処理
   const deleteFavorite = (id:number) => {
-    axios.delete('http://localhost:8000/favorite/delete_favorite',{...config,data: { id }})
+    axios.delete(backendUrl + '/favorite/delete_favorite',{...config,data: { id }})
     .then((res) => {
         console.log(res.data);
         setFavoriteState(0);

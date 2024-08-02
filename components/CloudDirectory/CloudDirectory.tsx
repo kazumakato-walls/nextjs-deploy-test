@@ -78,7 +78,8 @@ export function CloudDirectory() {
   const [fileButtonKey, setFileButtonKey] = useState<number>(0);
   const { config } = useAuthConfig();
   const { config: FormConfig } = useAxiosConfigForm();
-
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
+  
   // アップロード時の処理
   useEffect(() => {
     if (file == null){
@@ -93,10 +94,10 @@ export function CloudDirectory() {
     formData.append('directory_id', SelectedDirectory.directory_id.toString());
     formData.append('file', file);
 
-    const addcompany = axios.post("http://localhost:8000/file/upload_file",formData,FormConfig)
+    const addcompany = axios.post(backendUrl + '/file/upload_file',formData,FormConfig)
     .then((res) => {
           console.log(res.data)
-          const addcompany = axios.post("http://localhost:8000/file/get_all_files",
+          const addcompany = axios.post(backendUrl + '/file/get_all_files',
                                         {"directory_id": SelectedDirectory.directory_id}, 
                                         config)
           .then((res) => {
@@ -138,7 +139,7 @@ export function CloudDirectory() {
       "directory_name": value,
       "open_flg": false
       }
-    const add_directory = axios.post("http://localhost:8000/directory/add_directory",data,config)
+    const add_directory = axios.post(backendUrl + '/directory/add_directory',data,config)
     .then((res) => {
         console.log(res.data)
         refresh_directory() 
@@ -156,7 +157,7 @@ export function CloudDirectory() {
       console.log('ディレクトリが選択されていないため処理終了');
       return;
     }
-  const refresh = axios.post("http://localhost:8000/file/get_all_file",
+  const refresh = axios.post(backendUrl + '/file/get_all_file',
     {"directory_id": SelectedDirectory.directory_id}, 
     config)
   .then((res) => {
@@ -173,7 +174,7 @@ const add_Favorite = () =>{
     "directory_id": SelectedDirectory?.directory_id,
     "favorite_name": value
     }
-  const add_favorite = axios.post("http://localhost:8000/favorite/add_favorite", params, config)
+  const add_favorite = axios.post(backendUrl + '/favorite/add_favorite', params, config)
   .then((res) => {
     console.log(res.data)
     refresh_directory()

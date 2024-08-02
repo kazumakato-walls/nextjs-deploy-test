@@ -27,14 +27,15 @@ export function FileLists() {
   const { FileList, SelectedDirectory, setFileList, setRefreshState } = useGlobalContext();
   const { config } = useAuthConfig();
   const { config: downloadConfig } = useAxiosConfigDownloadFile();
-  
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
+
   // ファイル一覧更新
   const refresh_directory = async () => {
     if (!SelectedDirectory) {
       console.log('ディレクトリが選択されていないため処理終了');
       return;
     }
-  const refresh = axios.post("http://localhost:8000/file/get_all_file",
+  const refresh = axios.post(backendUrl + '/file/get_all_file',
     {"directory_id": SelectedDirectory.directory_id}, 
       config)
   .then((res) => {
@@ -60,14 +61,14 @@ export function FileLists() {
         return;
       }
       if (SelectedFile.icon_id === 99) {
-        axios.post("http://localhost:8000/directory/rename_directory", {
+        axios.post(backendUrl + '/directory/rename_directory', {
           "directory_id": SelectedFile.id,
           "new_directory_name": editValue
         }, config).then(() => {
             refresh_directory();
         }).catch(console.log);
       } else {
-        axios.post("http://localhost:8000/file/rename_file", {
+        axios.post(backendUrl + '/file/rename_file', {
           "file_id": SelectedFile.id,
           "new_file_name": editValue
         }, config).then(() => {
@@ -88,7 +89,7 @@ export function FileLists() {
     console.log(icon_id)
     console.log(id)
     if (icon_id == 99) {
-        axios.post("http://localhost:8000/directory/delete_directory", { "directory_id": id }, config)
+        axios.post(backendUrl + '/directory/delete_directory', { "directory_id": id }, config)
         .then(() => {
             refresh_directory()
             setRefreshState(prevCount => prevCount + 1)
@@ -96,7 +97,7 @@ export function FileLists() {
             console.log("err:", err);
         });
     }else{
-        axios.post("http://localhost:8000/file/delete_file", { "file_id": id }, config)
+        axios.post(backendUrl + '/file/delete_file', { "file_id": id }, config)
         .then(() => {
             refresh_directory()
             setRefreshState(prevCount => prevCount + 1)
@@ -109,7 +110,7 @@ export function FileLists() {
   // ファイルダウンロード
   const downloadFile = (id:number) => {
         console.log(id)
-        const refresh = axios.post("http://localhost:8000/file/download_file",
+        const refresh = axios.post(backendUrl + '/file/download_file',
           {"file_id": id}, 
           downloadConfig)
         .then((res) => {

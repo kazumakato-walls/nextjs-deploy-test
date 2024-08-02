@@ -13,7 +13,7 @@ export function FavoriteIcon() {
   const [favorite_opened, favorite_handlers] = useDisclosure(false);
   const [value, setValue] = useState('');
   const [test,setTest] = useState(0);
-  
+  const backendUrl = process.env.NEXT_PUBLIC_URL;
   // フォルダ追加モーダルの初期値リセット
   useEffect(() => {
         setValue('')
@@ -25,7 +25,7 @@ export function FavoriteIcon() {
       "directory_id": SelectedDirectory?.directory_id,
       "favorite_name": value
       }
-    const add_favorite = axios.post("http://localhost:8000/favorite/add_favorite", params, config)
+    const add_favorite = axios.post(backendUrl + '/favorite/add_favorite', params, config)
     .then((res) => {
       console.log(res.data)
       setFavoriteState(res.data.id)
@@ -39,7 +39,7 @@ export function FavoriteIcon() {
   // お気に入り削除   
   const deleteFavorite = () => {
     if (favoriteState === 0) return;
-    axios.delete('http://localhost:8000/favorite/delete_favorite', { ...config, data: { 'id': favoriteState } })
+    axios.delete(backendUrl + '/favorite/delete_favorite', { ...config, data: { 'id': favoriteState } })
       .then((res) => {
         console.log(res.data);
         setFavoriteState(0)
