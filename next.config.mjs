@@ -12,7 +12,10 @@ const nextConfig = {
     experimental: {
         optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
     },
-    output: 'standalone'
+    output: 'standalone',
+    env: {
+        NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
+    }
 };
 
 export default withBundleAnalyzer(nextConfig);
