@@ -42,8 +42,6 @@ export const DirectoryLinks = ({ directories }: { directories: Directory[] }) =>
         setFileList(res.data);
         setSelectedDirectory({ directory_id, path });
         setPageState(1);
-        // setFavoriteState(res.data.id)
-        // console.log(res.data.id)
         getfavoriteList(path)
     })
     .catch((err) => {

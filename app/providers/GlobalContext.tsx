@@ -8,9 +8,13 @@ interface GlobalContextList {
   pageState: number;
   setPageState: React.Dispatch<React.SetStateAction<number>>;
 
-  // お気に入り 0:登録なし 0以外:登録済み(id) 
-  favoriteState: number;
-  setFavoriteState: React.Dispatch<React.SetStateAction<number>>;
+  // Class=0のルートディレクトリID
+  RootDirectoryID: number;
+  setRootDirectoryID: React.Dispatch<React.SetStateAction<number>>;
+
+  // お気に入り null:class=0 0:登録なし 0以外:登録済み(id) 
+  favoriteState: number | null;
+  setFavoriteState: React.Dispatch<React.SetStateAction<number | null>>;
 
   // 画面リフレッシュ用カウンタ
   refreshState: number;
@@ -38,16 +42,17 @@ const GlobalContext = createContext<GlobalContextList | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [pageState, setPageState] = useState<number>(1);
-  const [favoriteState, setFavoriteState] = useState<number>(0);
+  const [RootDirectoryID, setRootDirectoryID] = useState<number>(0);
+  const [favoriteState, setFavoriteState] = useState<number | null>(0);
   const [refreshState, setRefreshState] = useState<number>(0);
   const [FileList, setFileList] = useState<FileListType[] | null>(null);
   const [SelectedDirectory, setSelectedDirectory] = useState<SelectedDirectoryType | null>(null);
   const [DirectoryList, setDirectoryList] = useState<DirectoryListType[] | null>(null);
   const [FavoriteList, setFavoriteList] = useState<FavoriteListType[] | null>(null);
   
-  
   return (
     <GlobalContext.Provider value={{ pageState, setPageState,
+                                     RootDirectoryID, setRootDirectoryID,
                                      favoriteState,setFavoriteState,
                                      refreshState, setRefreshState,
                                      FileList, setFileList,

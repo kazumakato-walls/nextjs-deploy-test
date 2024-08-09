@@ -97,7 +97,7 @@ export function CloudDirectory() {
     const addcompany = axios.post(backendUrl + '/file/upload_file',formData,FormConfig)
     .then((res) => {
           console.log(res.data)
-          const addcompany = axios.post(backendUrl + '/file/get_all_files',
+          const addcompany = axios.post(backendUrl + '/file/get_all_file',
                                         {"directory_id": SelectedDirectory.directory_id}, 
                                         config)
           .then((res) => {

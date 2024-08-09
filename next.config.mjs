@@ -10,12 +10,9 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     experimental: {
-        optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+        optimizePackageImports: ['@mantine/core', '@mantine/hooks', '@mantine/dates'],
     },
-    output: 'standalone',
-    env: {
-        NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
-    }
+    output: 'standalone'
 };
 
 export default withBundleAnalyzer(nextConfig);

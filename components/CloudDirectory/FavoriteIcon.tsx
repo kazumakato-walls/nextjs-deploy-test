@@ -38,7 +38,7 @@ export function FavoriteIcon() {
   }
   // お気に入り削除   
   const deleteFavorite = () => {
-    if (favoriteState === 0) return;
+    if (favoriteState == 0) return;
     axios.delete(backendUrl + '/favorite/delete_favorite', { ...config, data: { 'id': favoriteState } })
       .then((res) => {
         console.log(res.data);
@@ -52,13 +52,14 @@ export function FavoriteIcon() {
 
   // ファイルパスのお気に入りアイコン 
   const FavoriteIcons = useCallback(() => {
-    console.log(favoriteState)
     if (favoriteState == 0){
       return (
         <ActionIcon variant="default" radius="xl" aria-label="Settings" onClick={favorite_handlers.open}>
           <FaRegHeart />
         </ActionIcon>
       );
+    }else if(favoriteState == null){
+      return 
     }else{
       return (
         <ActionIcon variant="filled" radius="xl" color="skyblue" aria-label="Settings" onClick={deleteFavorite}>
@@ -66,6 +67,7 @@ export function FavoriteIcon() {
         </ActionIcon>
       );
     }
+
   },[favoriteState])
 
   return (

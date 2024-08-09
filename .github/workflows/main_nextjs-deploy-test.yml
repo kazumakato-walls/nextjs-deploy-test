@@ -32,7 +32,8 @@ jobs:
       - name: Build the project
         run: npm run build
         env:
-          NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
+          NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL_GIT_ACTION }}
+
       - name: Prepare deployment artifacts
         run: |
           mkdir -p deploy
@@ -74,4 +75,4 @@ jobs:
           app-name: 'nextjs-deploy-test'
           slot-name: 'Production'
           package: deploy
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70CC53C0D78845ACA20DE71682A3C615 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}

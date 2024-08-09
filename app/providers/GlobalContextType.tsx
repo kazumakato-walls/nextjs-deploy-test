@@ -9,7 +9,7 @@ export interface FileListType  {
 
 export interface SelectedDirectoryType {
     directory_id: number;
-    path: string;
+    path: string | null;
   };
 
 export interface DirectoryListType {

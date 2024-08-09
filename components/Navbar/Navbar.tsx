@@ -39,7 +39,7 @@ const buildTree = (items: Directory[]) => {
 export function Navbar() {
   const [tree, setTree] = useState<Directory[]>([]);
   const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const { setPageState, setFileList, setSelectedDirectory,refreshState, setRefreshState } = useGlobalContext();
+  const { setPageState, setFileList, setSelectedDirectory,refreshState, setRefreshState,RootDirectoryID, setRootDirectoryID,setFavoriteState } = useGlobalContext();
   const { session, config } = useAuthConfig();
   const backendUrl = process.env.NEXT_PUBLIC_URL;
 
@@ -47,15 +47,17 @@ export function Navbar() {
   useEffect(() => {
     getDirectoryList()
     getFavoriteList()
+    getRootDirectoryID()
   }, [refreshState]);
 
+  // ディレクトリリストの更新
   const getDirectoryList = () => {
     console.log(backendUrl)
-    axios
-      .get(backendUrl + '/directory/get_all_directory', config)
+    axios.get(backendUrl + '/directory/get_all_directory', config)
       .then((res) => {
         console.log(res.data);
         setTree(buildTree(res.data));
+        getRootDirectoryID()
         setPageState(1);
       })
       .catch((err) => {
@@ -63,6 +65,7 @@ export function Navbar() {
       });
   };
 
+  // ディレクトリリストの更新
   const getFavoriteList = () => {
     axios.get(backendUrl + '/favorite/get_all', config)
     .then((res) => {
@@ -75,16 +78,48 @@ export function Navbar() {
     });
   };
 
-  useEffect(() => {
-    getDirectoryList();
-    getFavoriteList();
-  }, []);
+  const getRootDirectoryID = () => {
+    axios.get(backendUrl + '/directory/get_root_directory', config)
+    .then((res) => {
+        console.log(res.data);
+        const directoryID:number = res.data
+        setRootDirectoryID(directoryID)
+        getFileList(directoryID)
+    })
+      .catch((err) => {
+        console.log('err:', err);
+    });
+  }
+
+    // ファイル一覧を取得する。
+    const getFileList = (directory_id: number) => {
+      axios.post(backendUrl + '/file/get_all_file', { directory_id }, config)
+      .then((res) => {
+          console.log(res.data);
+          setFileList(res.data);
+          const path = ''
+          setSelectedDirectory({ directory_id, path });          
+          setFavoriteState(null)
+          setPageState(1);
+      })
+      .catch((err) => {
+          console.log('err:', err);
+      });
+    };
+
+  // useEffect(() => {
+  //   getDirectoryList();
+  //   getFavoriteList();
+  // }, []);
 
   return (
     <div className={classes.mainLinks}>
       <Button className={classes.mainLink} variant="transparent" onClick={getDirectoryList}>
         ディレクトリ
       </Button>
+      {/* <Button className={classes.mainLink} variant="transparent" onClick={getRootDirectoryID}>
+        Rootディレクトリ
+      </Button> */}
       <div className={classes.mainLinks}>
         <DirectoryLinks directories={tree} />
       </div>
