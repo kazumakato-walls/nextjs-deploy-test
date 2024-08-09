@@ -6,6 +6,8 @@ export function Welcome() {
 
   const test = () => {
     console.log("Backend URL:", process.env.NEXT_PUBLIC_URL);
+    console.log("Backend URL:", process.env);
+    console.log("Backend URL:", process.env.CUSTOMCONNSTR_NEXT_PUBLIC_BACKEND);
   }
 
   return (
