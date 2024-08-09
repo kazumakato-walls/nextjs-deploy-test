@@ -31,8 +31,6 @@ jobs:
 
       - name: Build the project
         run: npm run build
-        env:
-          NEXT_PUBLIC_URL: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Prepare deployment artifacts
         run: |
