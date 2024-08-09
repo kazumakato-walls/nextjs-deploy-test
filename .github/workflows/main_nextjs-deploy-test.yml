@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - nextjs-deploy-test
+name: Build and deploy Next.js app to Azure Web App - nextjs-deploy-test
 
 on:
   push:
@@ -13,13 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Clear build cache
+        run: |
+          rm -rf .next
+          rm -rf node_modules
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
