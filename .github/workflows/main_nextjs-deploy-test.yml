@@ -32,8 +32,7 @@ jobs:
       - name: Build the project
         run: npm run build
         env:
-          NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}  # 環境変数の設定
-
+          NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
       - name: Prepare deployment artifacts
         run: |
           mkdir -p deploy
