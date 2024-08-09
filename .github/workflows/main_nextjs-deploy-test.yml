@@ -29,7 +29,7 @@ jobs:
             echo "env=development" >> $GITHUB_ENV
             echo "NEXT_PUBLIC_URL=${{ secrets.DEV_NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
           fi
-          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_AUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: npm install
