@@ -14,8 +14,8 @@ const nextConfig = {
     },
     output: 'standalone',
     env: {
-        NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL, // 環境変数を設定
-    }
-};
+        NEXT_PUBLIC_URL: process.env.CUSTOMCONNSTR_NEXT_PUBLIC_URL, // 接続文字列としての環境変数を設定
+      }
+    };
 
 export default withBundleAnalyzer(nextConfig);
