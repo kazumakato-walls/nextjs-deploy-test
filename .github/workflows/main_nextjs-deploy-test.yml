@@ -3,7 +3,8 @@ name: Build and deploy Next.js app to Azure Web App - nextjs-deploy-test
 on:
   push:
     branches:
-      - main
+      - main      # 本番環境
+      - develop   # 開発環境
   workflow_dispatch:
 
 jobs:
@@ -12,10 +13,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+
+      - name: Determine environment
+        id: env-setup
+        run: |
+          if [[ $GITHUB_REF == refs/heads/main ]]; then
+            echo "env=production" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_URL=${{ secrets.PROD_NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == refs/heads/develop ]]; then
+            echo "env=development" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_URL=${{ secrets.DEV_NEXT_PUBLIC_URL }}" >> $GITHUB_ENV
+          fi
 
       - name: Install dependencies
         run: npm install
@@ -23,7 +36,7 @@ jobs:
       - name: Build the project
         run: npm run build
         env:
-          NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}  # 環境変数の設定
+          NEXT_PUBLIC_URL: ${{ env.NEXT_PUBLIC_URL }}
 
       - name: Prepare deployment artifacts
         run: |
@@ -42,8 +55,6 @@ jobs:
         with:
           name: node-app
           path: release.zip
-
-        
 
   deploy:
     runs-on: ubuntu-latest
@@ -65,7 +76,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'nextjs-deploy-test'
+          app-name: nextjs-deploy-test  # 本番・開発に対応するApp Serviceの名前
           slot-name: 'Production'
           package: deploy
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
