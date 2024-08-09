@@ -8,7 +8,7 @@ export function Welcome() {
     const test = process.env.NEXT_PUBLIC_URL;
     const test2 = process.env.CUSTOMCONNSTR_NEXT_PUBLIC_BACKEND;
     console.log("Backend URL:", process.env.NEXT_PUBLIC_URL);
-    console.log("Backend URL:", process.env);
+    console.log("Backend URL:", process.env.NEXTAUTH_SECRET);
     console.log("Backend URL:", process.env.CUSTOMCONNSTR_NEXT_PUBLIC_BACKEND);
     console.log("Backend URL:", test);
     console.log("Backend URL:", test2);
