@@ -41,7 +41,7 @@ import { BsFileEarmarkFont } from "react-icons/bs";
 // import { FileList } from './FileList'
 import { FileLists } from './FileList';
 import { useAuthConfig,useAxiosConfigForm } from '../../app/providers/useAuthConfig';
-
+import dayjs from "dayjs";
 import { FavoriteIcon } from './FavoriteIcon'
 
 interface FileListType {
@@ -85,7 +85,7 @@ export function CloudDirectory() {
     if (file == null){
       return
     }
-
+    const fileUpdateTime = dayjs(new Date(file.lastModified)).format('YYYY-MM-DD HH:mm:ss');
     const formData = new FormData();
     if (SelectedDirectory == null || file == null) {
       console.log('データがないため処理終了');
@@ -93,7 +93,8 @@ export function CloudDirectory() {
     }
     formData.append('directory_id', SelectedDirectory.directory_id.toString());
     formData.append('file', file);
-
+    formData.append('file_update_time', fileUpdateTime);
+    console.log(formData)
     const addcompany = axios.post(backendUrl + '/file/upload_file',formData,FormConfig)
     .then((res) => {
           console.log(res.data)
@@ -139,6 +140,7 @@ export function CloudDirectory() {
       "directory_name": value,
       "open_flg": false
       }
+
     const add_directory = axios.post(backendUrl + '/directory/add_directory',data,config)
     .then((res) => {
         console.log(res.data)

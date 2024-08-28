@@ -12,10 +12,7 @@ const nextConfig = {
     experimental: {
         optimizePackageImports: ['@mantine/core', '@mantine/hooks', '@mantine/dates'],
     },
-    output: 'standalone',
-    env: {
-        NEXT_PUBLIC_URL: process.env.CUSTOMCONNSTR_NEXT_PUBLIC_URL, // 接続文字列としての環境変数を設定
-      }
-    };
+    output: 'standalone'
+};
 
 export default withBundleAnalyzer(nextConfig);

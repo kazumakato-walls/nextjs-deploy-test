@@ -17,24 +17,28 @@ import { useAuthConfig } from '../../app/providers/useAuthConfig'
 const buildTree = (items: Directory[]) => {
   const tree: Directory[] = [];
   const lookup: { [key: string]: Directory } = {};
-
   items.forEach(item => {
-    lookup[item.directory_name] = item;
+    const key = `${item.directory_name}_${item.directory_class}`;
+    lookup[key] = item;
     item.children = [];
   });
 
   items.forEach(item => {
     if (item.path) {
       const parentName = item.path.slice(0, -1).split('/').pop() || '';
-      if (lookup[parentName]) {
-        lookup[parentName].children!.push(item);
+      const parentClass = item.directory_class - 1;
+      const parentKey = `${parentName}_${parentClass}`;
+      if (lookup[parentKey]) {
+        lookup[parentKey].children!.push(item);
       }
     } else {
       tree.push(item);
     }
   });
+
   return tree;
 };
+
 
 export function Navbar() {
   const [tree, setTree] = useState<Directory[]>([]);
@@ -45,9 +49,8 @@ export function Navbar() {
 
   // フォルダ追加モーダルの初期値リセット
   useEffect(() => {
-    getDirectoryList()
+    refreshDirectoryList()
     getFavoriteList()
-    getRootDirectoryID()
   }, [refreshState]);
 
   // ディレクトリリストの更新
@@ -64,8 +67,20 @@ export function Navbar() {
         console.log('err:', err);
       });
   };
-
   // ディレクトリリストの更新
+  const refreshDirectoryList = () => {
+    console.log(backendUrl)
+    axios.get(backendUrl + '/directory/get_all_directory', config)
+      .then((res) => {
+        console.log(res.data);
+        setTree(buildTree(res.data));
+        setPageState(1);
+      })
+      .catch((err) => {
+        console.log('err:', err);
+      });
+  };
+  // ディレクトリリストの更新 ルートディレクトリ移動なし
   const getFavoriteList = () => {
     axios.get(backendUrl + '/favorite/get_all', config)
     .then((res) => {
@@ -78,6 +93,7 @@ export function Navbar() {
     });
   };
 
+  // ルートディレクトリ取得
   const getRootDirectoryID = () => {
     axios.get(backendUrl + '/directory/get_root_directory', config)
     .then((res) => {
@@ -107,10 +123,6 @@ export function Navbar() {
       });
     };
 
-  // useEffect(() => {
-  //   getDirectoryList();
-  //   getFavoriteList();
-  // }, []);
 
   return (
     <div className={classes.mainLinks}>
