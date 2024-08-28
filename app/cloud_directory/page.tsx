@@ -11,7 +11,7 @@ import { Grid } from '@mantine/core';
 import { GlobalProvider, useGlobalContext } from '../providers/GlobalContext';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { CloudDirectory } from '../../components/CloudDirectory/CloudDirectory';
-import { Contact } from '../../components/Contact/Contact';
+import { Profile } from '../../components/Profile/Profile';
 import { Options } from '../../components/Options/Options';
 
 
@@ -23,7 +23,7 @@ const HomeContent = () => {
       case 1:
         return <CloudDirectory />; //ファイル共有画面へ
       case 2:
-        return <Contact />; //お問い合わせ画面へ
+        return <Profile />; //お問い合わせ画面へ
       case 3:
         return <Options />; //設定画面へ
       default:

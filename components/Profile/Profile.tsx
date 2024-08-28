@@ -18,10 +18,6 @@ export function Profile() {
         <Tabs.Tab value="EditPassword" leftSection={<FiUser style={iconStyle} />}>
           パスワード変更
         </Tabs.Tab>
-        {/* <Tabs.Tab value="settings" leftSection={<FiUser style={iconStyle} />}> */}
-        <Tabs.Tab value="Ather" >
-          Ather
-        </Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value="EditUser">
@@ -32,9 +28,6 @@ export function Profile() {
         <EditPassword />
       </Tabs.Panel>
 
-      <Tabs.Panel value="Ather">
-        comming soon...
-      </Tabs.Panel>
     </Tabs>    
     </>
   );

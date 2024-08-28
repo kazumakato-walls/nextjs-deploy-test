@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Text } from '@mantine/core';
+import Link from "next/link";
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { IoHomeSharp, IoSettingsOutline } from 'react-icons/io5';
@@ -39,11 +40,10 @@ const buildTree = (items: Directory[]) => {
   return tree;
 };
 
-
 export function Navbar() {
   const [tree, setTree] = useState<Directory[]>([]);
   const [favorites, setFavorites] = useState<Favorite[]>([]);
-  const { setPageState, setFileList, setSelectedDirectory,refreshState, setRefreshState,RootDirectoryID, setRootDirectoryID,setFavoriteState } = useGlobalContext();
+  const { setPageState, setFileList, setSelectedDirectory,refreshState, setRefreshState, RootDirectoryID, setRootDirectoryID, setFavoriteState } = useGlobalContext();
   const { session, config } = useAuthConfig();
   const backendUrl = process.env.NEXT_PUBLIC_URL;
 
@@ -143,6 +143,7 @@ export function Navbar() {
         <FavoriteLinks favorites={favorites} />
       </div>
 
+      
       <div className={classes.mainLinks}>
         <Text size="xs" fw={500} c="dimmed">
           ユーザー
@@ -157,6 +158,7 @@ export function Navbar() {
         >
           ホーム
         </Button>
+        {session?.user?.data?.admin && (
         <Button
           className={classes.mainLink}
           leftSection={<IoSettingsOutline size={14} />}
@@ -165,23 +167,25 @@ export function Navbar() {
         >
           設定
         </Button>
+        )}
         <Button
           className={classes.mainLink}
-          leftSection={<MdOutlineContactSupport size={14} />}
+          leftSection={<IoSettingsOutline size={14} />}
           variant="transparent"
           onClick={() => setPageState(2)}
         >
-          サポート
+          ユーザー設定
         </Button>
         <Button
           className={classes.mainLink}
           leftSection={<LuLogOut size={14} />}
           variant="transparent"
-          onClick={() => (session?.user?.accessToken ? signOut() : signIn())}
+          onClick={() => (session?.user?.accessToken ? signOut({redirect: true,callbackUrl: '/'}) : signIn())}
         >
           ログアウト
         </Button>
       </div>
+      
     </div>
   );
 }

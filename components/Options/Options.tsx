@@ -26,9 +26,9 @@ export function Options() {
           会社追加
         </Tabs.Tab>
         {/* <Tabs.Tab value="settings" leftSection={<FiUser style={iconStyle} />}> */}
-        <Tabs.Tab value="Ather" >
-          Ather
-        </Tabs.Tab>
+        {/* <Tabs.Tab value="Other" >
+          Other
+        </Tabs.Tab> */}
       </Tabs.List>
 
       <Tabs.Panel value="UserList">
@@ -43,7 +43,7 @@ export function Options() {
         <AddUser />
       </Tabs.Panel>
 
-      <Tabs.Panel value="Ather">
+      <Tabs.Panel value="Other">
         comming soon...
       </Tabs.Panel>
     </Tabs>    

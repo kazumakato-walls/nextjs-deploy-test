@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 // library
 import { useCounter, useDisclosure } from '@mantine/hooks';
-import { Table, TextInput, Group, FileButton, Text, Button, Grid, ActionIcon, Menu, Modal } from '@mantine/core';
+import { Table, TextInput, Group, FileButton, Text, Button, Grid, ActionIcon, Menu, Modal, Paper } from '@mantine/core';
 import axios,{ ResponseType } from 'axios';
 import { saveAs } from 'file-saver';
 
@@ -38,6 +38,7 @@ import { BsFileEarmark } from "react-icons/bs";
 import { BsFileMusic } from "react-icons/bs";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import { BsFileEarmarkFont } from "react-icons/bs";
+import { RiFolderUploadLine } from "react-icons/ri";
 // import { FileList } from './FileList'
 import { FileLists } from './FileList';
 import { useAuthConfig,useAxiosConfigForm } from '../../app/providers/useAuthConfig';
@@ -131,6 +132,7 @@ export function CloudDirectory() {
   const handleAddDirectory = async () => {
     console.log(SelectedDirectory)
     console.log(value)
+    console.log(backendUrl)
     if (!SelectedDirectory) {
       console.log('ディレクトリが選択されていないため処理終了');
       return;
@@ -189,18 +191,33 @@ const add_Favorite = () =>{
   return (
     <>
       <Grid>
-        <Grid.Col span={10}>
-          <FavoriteIcon />
-        </Grid.Col>
-      </Grid>
+      <Grid.Col span={7}>
+        <FavoriteIcon />
+      </Grid.Col>
+    </Grid>
+    <Grid mt={-52}>
+      <Grid.Col span={7}>
+        {/* <FavoriteIcon /> */}
+      </Grid.Col>
+
+      <Grid.Col span={5}>
+        <Group justify="left">
+        <Button leftSection={<FiFolderPlus size={20} />} onClick={open} variant="default">新しいフォルダ</Button>
+        <FileButton key={fileButtonKey} onChange={setFile}>
+          {(props) => <Button {...props} leftSection={<RiFolderUploadLine size={20}/>} variant="default" >ファイルアップロード</Button>}
+        </FileButton>
+        </Group>
+      </Grid.Col>
+    </Grid>
+      <Paper withBorder shadow="md" p={'sm'} mt={30} radius="md">
       <Table>
         <Table.Thead>
           <Table.Tr key={0}>
-            <Table.Th>ファイル名</Table.Th>
-            <Table.Th>サイズ</Table.Th>
-            <Table.Th>種類</Table.Th>
-            <Table.Th>更新日時</Table.Th>
-            <Table.Th></Table.Th>
+            <Table.Th w={120}>ファイル名</Table.Th>
+            <Table.Th w={10}>サイズ</Table.Th>
+            <Table.Th w={60}>種類</Table.Th>
+            <Table.Th w={60}>更新日時</Table.Th>
+            <Table.Th w={60}></Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody><FileLists /></Table.Tbody>
@@ -224,12 +241,8 @@ const add_Favorite = () =>{
                     追加
                 </Button>
         </Modal>
-        <Button leftSection={<FiFolderPlus size={20} />} onClick={open}>フォルダ追加</Button>
-        <FileButton key={fileButtonKey} onChange={setFile}>
-          {(props) => <Button {...props}>ファイルアップロード</Button>}
-        </FileButton>
-        {/* <Button leftSection={<FiFolderPlus size={20} />} onClick={test}>テスト</Button> */}
       </Group>
+      </Paper>
       {file && (
         <Text size="sm" ta="center" mt="sm">
           Picked file: {file.name}
